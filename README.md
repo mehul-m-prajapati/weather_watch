@@ -16,11 +16,11 @@
     </thead>
     <tbody>
         <tr>
-            <td><img alt="Stars" src="https://img.shields.io/github/stars/your-username/weather-forecasting-app?style=flat&logo=github" /></td>
-            <td><img alt="Forks" src="https://img.shields.io/github/forks/your-username/weather-forecasting-app?style=flat&logo=github" /></td>
-            <td><img alt="Issues" src="https://img.shields.io/github/issues/your-username/weather-forecasting-app?style=flat&logo=github" /></td>
-            <td><img alt="Open Pull Requests" src="https://img.shields.io/github/issues-pr/your-username/weather-forecasting-app?style=flat&logo=github" /></td>
-            <td><img alt="Closed Pull Requests" src="https://img.shields.io/github/issues-pr-closed/your-username/weather-forecasting-app?style=flat&color=green&logo=github" /></td>
+            <td><img alt="Stars" src="https://img.shields.io/github/stars/mehul-m-prajapati/weather_watch?style=flat&logo=github" /></td>
+            <td><img alt="Forks" src="https://img.shields.io/github/forks/mehul-m-prajapati/weather_watch?style=flat&logo=github" /></td>
+            <td><img alt="Issues" src="https://img.shields.io/github/issues/mehul-m-prajapati/weather_watch?style=flat&logo=github" /></td>
+            <td><img alt="Open Pull Requests" src="https://img.shields.io/github/issues-pr/mehul-m-prajapati/weather_watch?style=flat&logo=github" /></td>
+            <td><img alt="Closed Pull Requests" src="https://img.shields.io/github/issues-pr-closed/mehul-m-prajapati/weather_watch?style=flat&color=green&logo=github" /></td>
         </tr>
     </tbody>
 </table>
@@ -37,16 +37,16 @@
 
 The app uses the following technologies:
 
-| Frontend | ![React](https://skillicons.dev/icons?i=react) | ![Vite](https://skillicons.dev/icons?i=vite) | ![TailwindCSS](https://skillicons.dev/icons?i=tailwind) |
-|----------|---------|---------|-----------|
-| API      | ![OpenWeather](https://skillicons.dev/icons?i=openweathermap) |    |      |
-| Deployment | ![Vercel](https://skillicons.dev/icons?i=vercel) | ![Git](https://skillicons.dev/icons?i=git) | ![GitHub](https://skillicons.dev/icons?i=github) |
+| Category    | | | |
+|-------------|----------------|--------------|--------------|
+| Frontend   | React          | Vite         | TailwindCSS  |
+| API        | OpenWeather    |              |              |
+| Deployment | Vercel         |              |              |
+
 
 ## Installation & Setup
 
 Follow these steps to get your local copy of the Weather Forecasting App running:
-
-### 1. Local setup
 
 ```bash
 git clone https://github.com/mehul-m-prajapati/weather_watch
