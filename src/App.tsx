@@ -1,56 +1,113 @@
-import React, { useState } from "react";
-import { fetchWeather } from "./utils/weatherAPI";
-import WeatherCard from "./components/WeatherCard";
+import React, { useState, useEffect } from 'react';
+import { useTheme } from './ThemeContext';
+import { WeatherData, ForecastData } from './types';
+import { SearchBar } from './components/SearchBar';
+import { ThemeToggle } from './components/ThemeToggle';
+import { CurrentWeather } from './components/CurrentWeather';
+import { Forecast } from './components/Forecast';
+
+
+const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
+const BASE_URL = 'https://api.openweathermap.org/data/2.5';
 
 function App() {
-  const [city, setCity] = useState("");
-  const [weatherData, setWeatherData] = useState<any>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [location, setLocation] = useState('Montreal');
+  const [activeTab, setActiveTab] = useState<'hourly' | 'daily'>('hourly');
+  const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [forecast, setForecast] = useState<ForecastData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const { theme, toggleTheme } = useTheme();
+  const isDark = theme === 'dark';
 
-  const handleSearch = async () => {
-    if (!city) return;
-    setLoading(true);
-    setError("");
+  const fetchWeatherData = async (searchLocation: string) => {
     try {
-      const data = await fetchWeather(city);
-      setWeatherData(data);
+      setLoading(true);
+      setError(null);
+
+      const weatherResponse = await fetch(
+        `${BASE_URL}/weather?q=${searchLocation}&appid=${API_KEY}`
+      );
+      if (!weatherResponse.ok) throw new Error('City not found');
+      const weatherData = await weatherResponse.json();
+
+      const forecastResponse = await fetch(
+        `${BASE_URL}/forecast?q=${searchLocation}&appid=${API_KEY}`
+      );
+      if (!forecastResponse.ok) throw new Error('Forecast data not available');
+      const forecastData = await forecastResponse.json();
+
+      setWeather(weatherData);
+      setForecast(forecastData);
     } catch (err) {
-      setError("City not found or API issue");
-      console.log(err);
+      setError(err instanceof Error ? err.message : 'Failed to fetch weather data');
     } finally {
       setLoading(false);
     }
   };
 
-  return (
-    <div className="min-h-screen bg-blue-50 flex flex-col items-center justify-center p-4">
-      <h1 className="text-3xl font-bold mb-4">Weather Prediction</h1>
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder="Enter city"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          className="border p-2 rounded-lg text-black"
-        />
-        <button
-          onClick={handleSearch}
-          className="ml-2 p-2 bg-blue-500 text-white rounded-lg"
-        >
-          Search
-        </button>
+  useEffect(() => {
+    fetchWeatherData(location);
+  }, []);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    fetchWeatherData(location);
+  };
+
+  if (error) {
+    return (
+      <div className={`min-h-screen flex items-center justify-center ${
+        isDark ? 'bg-slate-900 text-slate-100' : 'bg-blue-50 text-slate-900'
+      }`}>
+        <div className="text-center">
+          <p className="text-xl mb-4">{error}</p>
+          <button
+            onClick={() => fetchWeatherData('London')}
+            className="px-4 py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600"
+          >
+            Try Again
+          </button>
+        </div>
       </div>
-      {loading && <p>Loading...</p>}
-      {error && <p className="text-red-500">{error}</p>}
-      {weatherData && !loading && (
-        <WeatherCard
-          city={weatherData.name}
-          temperature={weatherData.main.temp}
-          description={weatherData.weather[0].description}
-          icon={weatherData.weather[0].icon}
-        />
-      )}
+    );
+  }
+
+  return (
+    <div className={`min-h-screen transition-colors duration-200 ${
+      isDark
+        ? 'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900'
+        : 'bg-gradient-to-br from-blue-50 via-white to-blue-50'
+    }`}>
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex items-center justify-between mb-8">
+          <ThemeToggle isDark={isDark} toggleTheme={toggleTheme} />
+          <SearchBar
+            location={location}
+            setLocation={setLocation}
+            onSearch={handleSearch}
+            isDark={isDark}
+          />
+        </div>
+
+        {loading ? (
+          <div className="flex items-center justify-center h-[calc(100vh-200px)]">
+            <div className={`animate-spin rounded-full h-12 w-12 border-4 ${
+              isDark ? 'border-slate-600 border-t-sky-400' : 'border-slate-200 border-t-sky-500'
+            }`} />
+          </div>
+        ) : weather && forecast && (
+          <>
+            <CurrentWeather weather={weather} isDark={isDark} />
+            <Forecast
+              forecast={forecast}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
+              isDark={isDark}
+            />
+          </>
+        )}
+      </div>
     </div>
   );
 }
