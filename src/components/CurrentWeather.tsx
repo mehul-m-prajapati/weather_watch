@@ -1,4 +1,3 @@
-import React from 'react';
 import { MapPin, Wind, Droplets, Thermometer } from 'lucide-react';
 import { format, fromUnixTime } from 'date-fns';
 import { WeatherData } from '../types';
@@ -12,8 +11,8 @@ interface CurrentWeatherProps {
 export function CurrentWeather({ weather, isDark }: CurrentWeatherProps) {
   return (
     <div className={`transition-colors duration-200 rounded-xl p-8 mb-8 ${
-      isDark 
-        ? 'bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-md border border-slate-700/50' 
+      isDark
+        ? 'bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-md border border-slate-700/50'
         : 'bg-white border border-slate-200 shadow-lg'
     }`}>
       <div className="flex items-center justify-between mb-6">
@@ -44,8 +43,8 @@ export function CurrentWeather({ weather, isDark }: CurrentWeatherProps) {
           { icon: Thermometer, label: 'Feels like', value: `${kelvinToCelsius(weather.main.feels_like)}°C` },
         ].map((item, index) => (
           <div key={index} className={`flex items-center rounded-lg p-4 transition-colors duration-200 ${
-            isDark 
-              ? 'bg-slate-800/30 border border-slate-700/50' 
+            isDark
+              ? 'bg-slate-800/30 border border-slate-700/50'
               : 'bg-slate-50 border border-slate-200'
           }`}>
             <item.icon className={`h-6 w-6 mr-3 ${isDark ? 'text-sky-400' : 'text-sky-500'}`} />
