@@ -5,7 +5,7 @@ import { SearchBar } from './components/SearchBar';
 import { ThemeToggle } from './components/ThemeToggle';
 import { CurrentWeather } from './components/CurrentWeather';
 import { Forecast } from './components/Forecast';
-
+import Navbar from './components/Navbar';
 
 const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
@@ -74,6 +74,8 @@ function App() {
   }
 
   return (
+    <>
+    <Navbar isDark={isDark} />
     <div className={`min-h-screen transition-colors duration-200 ${
       isDark
         ? 'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900'
@@ -109,6 +111,7 @@ function App() {
         )}
       </div>
     </div>
+    </>
   );
 }
 

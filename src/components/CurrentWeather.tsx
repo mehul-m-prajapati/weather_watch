@@ -28,7 +28,7 @@ export function CurrentWeather({ weather, isDark }: CurrentWeatherProps) {
           </p>
         </div>
         <div className="text-right">
-          <div className={`text-5xl font-bold ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
+          <div className={`text-4xl font-bold ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
             {kelvinToCelsius(weather.main.temp)}°C
           </div>
           <p className={isDark ? 'text-slate-400' : 'text-slate-600'}>

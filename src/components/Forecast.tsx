@@ -70,8 +70,8 @@ export function Forecast({ forecast, activeTab, setActiveTab, isDark }: Forecast
                 <div key={index} className={`flex items-center justify-between py-2 border-b ${
                   isDark ? 'border-slate-700/50' : 'border-slate-200'
                 } last:border-0`}>
-                  <p className={`w-28 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
-                    {format(fromUnixTime(item.dt), 'EEEE')}
+                  <p className={`w-48 ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
+                    {format(fromUnixTime(item.dt), 'EEE, M/dd')}
                   </p>
                   <WeatherIcon
                     condition={item.weather[0].main}
