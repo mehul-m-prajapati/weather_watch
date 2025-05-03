@@ -30,3 +30,9 @@ export interface ForecastData {
     }>;
   }>;
 }
+
+export interface CityData {
+  name: string;
+  country: string;
+  state?: string;
+}
