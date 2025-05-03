@@ -1,4 +1,5 @@
 import React from "react";
+import useAnimatedValue from "../hooks/useAnimatedValue";
 
 interface WeatherCardProps {
   city: string;
@@ -21,7 +22,9 @@ const WeatherCard: React.FC<WeatherCardProps> = ({
         alt={description}
         className="mx-auto my-4"
       />
-      <p className="text-xl">{temperature}°C</p>
+      <p className="text-xl transition-all duration-1000 ease-out transform hover:scale-105">
+        {useAnimatedValue(temperature, 1500, 1)}°C
+      </p>
       <p className="text-md text-gray-700">{description}</p>
     </div>
   );

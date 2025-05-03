@@ -8,7 +8,9 @@ import { Forecast } from './components/Forecast';
 import Navbar from './components/Navbar';
 
 const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
-const BASE_URL = 'https://api.openweathermap.org/data/2.5';
+const BASE_URL = 'http://api.openweathermap.org/data/2.5';
+
+console.log("VITE_OPENWEATHER_API_KEY:", API_KEY);
 
 function App() {
   const [location, setLocation] = useState('Montreal');
@@ -28,14 +30,23 @@ function App() {
       const weatherResponse = await fetch(
         `${BASE_URL}/weather?q=${searchLocation}&appid=${API_KEY}`
       );
-      if (!weatherResponse.ok) throw new Error('City not found');
       const weatherData = await weatherResponse.json();
+      if (!weatherResponse.ok) {
+        // Show full error from API
+        setError(`Weather API error: ${weatherData.message || weatherResponse.statusText}`);
+        setLoading(false);
+        return;
+      }
 
       const forecastResponse = await fetch(
         `${BASE_URL}/forecast?q=${searchLocation}&appid=${API_KEY}`
       );
-      if (!forecastResponse.ok) throw new Error('Forecast data not available');
       const forecastData = await forecastResponse.json();
+      if (!forecastResponse.ok) {
+        setError(`Forecast API error: ${forecastData.message || forecastResponse.statusText}`);
+        setLoading(false);
+        return;
+      }
 
       setWeather(weatherData);
       setForecast(forecastData);
