@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useTheme } from './ThemeContext';
-import { WeatherData, ForecastData } from './types';
-import { SearchBar } from './components/SearchBar';
-import { ThemeToggle } from './components/ThemeToggle';
+import { useEffect, useState } from 'react';
 import { CurrentWeather } from './components/CurrentWeather';
 import { Forecast } from './components/Forecast';
 import Navbar from './components/Navbar';
+import { SearchBar } from './components/SearchBar';
+import { ThemeToggle } from './components/ThemeToggle';
+import { useTheme } from './ThemeContext';
+import { ForecastData, WeatherData } from './types';
 
 const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
@@ -25,20 +25,35 @@ function App() {
       setLoading(true);
       setError(null);
 
+      // Encode the location parameter to avoid malformed requests
+      const encodedLocation = encodeURIComponent(searchLocation);
+
       const weatherResponse = await fetch(
-        `${BASE_URL}/weather?q=${searchLocation}&appid=${API_KEY}`
+        `${BASE_URL}/weather?q=${encodedLocation}&appid=${API_KEY}`
       );
-      if (!weatherResponse.ok) throw new Error('City not found');
+      
+      if (!weatherResponse.ok) {
+        if (weatherResponse.status === 404) {
+          throw new Error('City not found');
+        }
+        throw new Error(`Weather request failed with status: ${weatherResponse.status}`);
+      }
+      
       const weatherData = await weatherResponse.json();
 
       const forecastResponse = await fetch(
-        `${BASE_URL}/forecast?q=${searchLocation}&appid=${API_KEY}`
+        `${BASE_URL}/forecast?q=${encodedLocation}&appid=${API_KEY}`
       );
-      if (!forecastResponse.ok) throw new Error('Forecast data not available');
+      
+      if (!forecastResponse.ok) {
+        throw new Error('Forecast data not available');
+      }
+      
       const forecastData = await forecastResponse.json();
 
       setWeather(weatherData);
       setForecast(forecastData);
+      setLocation(searchLocation); // Update the location state after successful fetch
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch weather data');
     } finally {
@@ -50,9 +65,10 @@ function App() {
     fetchWeatherData(location);
   }, []);
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    fetchWeatherData(location);
+  const handleSearch = (searchLocation: string) => {
+    // The SearchBar component now directly passes the location string to search
+    // This avoids race conditions with setLocation
+    fetchWeatherData(searchLocation);
   };
 
   if (error) {
@@ -85,11 +101,13 @@ function App() {
         <div className="flex items-center justify-between mb-8">
           <ThemeToggle isDark={isDark} toggleTheme={toggleTheme} />
           <SearchBar
-            location={location}
-            setLocation={setLocation}
-            onSearch={handleSearch}
-            isDark={isDark}
-          />
+              onSearch={(city: string) => {
+              setLocation(city);
+              fetchWeatherData(city);
+  }}
+  isDark={isDark}
+/>
+
         </div>
 
         {loading ? (
@@ -107,6 +125,7 @@ function App() {
               setActiveTab={setActiveTab}
               isDark={isDark}
             />
+            
           </>
         )}
       </div>
