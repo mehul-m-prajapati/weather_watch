@@ -65,11 +65,7 @@ function App() {
     fetchWeatherData(location);
   }, []);
 
-  const handleSearch = (searchLocation: string) => {
-    // The SearchBar component now directly passes the location string to search
-    // This avoids race conditions with setLocation
-    fetchWeatherData(searchLocation);
-  };
+
 
   if (error) {
     return (
@@ -101,9 +97,9 @@ function App() {
         <div className="flex items-center justify-between mb-8">
           <ThemeToggle isDark={isDark} toggleTheme={toggleTheme} />
           <SearchBar
-              onSearch={(city: string) => {
-              setLocation(city);
-              fetchWeatherData(city);
+            onSearch={(city: string) => {
+            setLocation(city);
+            fetchWeatherData(city);
   }}
   isDark={isDark}
 />

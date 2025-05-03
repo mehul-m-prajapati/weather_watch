@@ -1,6 +1,6 @@
 import debounce from 'lodash.debounce';
 import { Search } from 'lucide-react';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 interface Suggestion {
   name: string;
@@ -36,7 +36,11 @@ export function SearchBar({ onSearch, isDark }: SearchBarProps) {
   };
 
   // Stable debounced function (created only once)
-  const debouncedFetch = useMemo(() => debounce(fetchSuggestions, 300), []);
+   const fetchSuggestionsCb = useCallback(fetchSuggestions, []); // stable ref
+    const debouncedFetch = useMemo(
+    () => debounce(fetchSuggestionsCb, 300),
+    [fetchSuggestionsCb]
+  );
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
