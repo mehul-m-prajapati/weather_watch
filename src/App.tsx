@@ -5,6 +5,7 @@ import { SearchBar } from './components/SearchBar';
 import { ThemeToggle } from './components/ThemeToggle';
 import { CurrentWeather } from './components/CurrentWeather';
 import { Forecast } from './components/Forecast';
+import { WeatherTrends } from './components/WeatherTrends';
 import Navbar from './components/Navbar';
 
 const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
@@ -107,6 +108,7 @@ function App() {
               setActiveTab={setActiveTab}
               isDark={isDark}
             />
+            <WeatherTrends isDark={isDark} forecast={forecast} />
           </>
         )}
       </div>
