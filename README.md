@@ -37,12 +37,8 @@
 
 The app uses the following technologies:
 
-| Category    | | | |
-|-------------|----------------|--------------|--------------|
-| Frontend   | React          | Vite         | TailwindCSS  |
-| API        | OpenWeather    |              |              |
-| Deployment | Vercel         |              |              |
-
+- **Frontend**: React, Vite, TailwindCSS
+- **API**: OpenWeather
 
 ## Installation & Setup
 
