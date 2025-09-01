@@ -11,7 +11,7 @@ const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
 const BASE_URL = 'https://api.openweathermap.org/data/2.5';
 
 function App() {
-  const [location, setLocation] = useState('Montreal');
+  const [location, setLocation] = useState('Ahmedabad');
   const [activeTab, setActiveTab] = useState<'hourly' | 'daily'>('hourly');
   const [weather, setWeather] = useState<WeatherData | null>(null);
   const [forecast, setForecast] = useState<ForecastData | null>(null);
