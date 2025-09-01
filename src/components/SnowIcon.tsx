@@ -11,6 +11,7 @@ const SnowIcon = ({ size = 24, className = "" }) => {
           filter: "drop-shadow(0 0 2px rgba(59, 130, 246, 0.5))",
         }}
       />
+      {/*
       <div className="absolute top-1/2 left-1/4 -translate-x-1/2">
         {[...Array(3)].map((_, i) => (
           <div
@@ -24,7 +25,7 @@ const SnowIcon = ({ size = 24, className = "" }) => {
             }}
           />
         ))}
-      </div>
+      </div>*/}
     </div>
   );
 };
