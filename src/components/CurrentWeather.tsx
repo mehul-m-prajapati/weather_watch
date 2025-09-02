@@ -2,6 +2,7 @@ import { MapPin, Wind, Droplets, Thermometer } from 'lucide-react';
 import { format, fromUnixTime } from 'date-fns';
 import { WeatherData } from '../types';
 import { kelvinToCelsius } from '../utils';
+import useAnimatedValue from '../hooks/useAnimatedValue';
 
 interface CurrentWeatherProps {
   weather: WeatherData;
@@ -9,6 +10,15 @@ interface CurrentWeatherProps {
 }
 
 export function CurrentWeather({ weather, isDark }: CurrentWeatherProps) {
+  // Use custom hook for animated values
+  const temperature = kelvinToCelsius(weather.main.temp);
+  const humidity = weather.main.humidity;
+  const feelsLike = kelvinToCelsius(weather.main.feels_like);
+  
+  // Animate values with custom hook
+  const animatedTemp = useAnimatedValue(temperature, 1500, 1);
+  const animatedHumidity = useAnimatedValue(humidity, 1500, 0);
+  const animatedFeelsLike = useAnimatedValue(feelsLike, 1500, 1);
   return (
     <div className={`transition-colors duration-200 rounded-xl p-8 mb-8 ${
       isDark
@@ -28,8 +38,8 @@ export function CurrentWeather({ weather, isDark }: CurrentWeatherProps) {
           </p>
         </div>
         <div className="text-right">
-          <div className={`text-4xl font-bold ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>
-            {kelvinToCelsius(weather.main.temp)}°C
+          <div className={`text-4xl font-bold ${isDark ? 'text-slate-100' : 'text-slate-900'} transition-all duration-1000 ease-out transform hover:scale-105`}>
+            {animatedTemp}°C
           </div>
           <p className={isDark ? 'text-slate-400' : 'text-slate-600'}>
             {weather.weather[0].description}
@@ -39,8 +49,8 @@ export function CurrentWeather({ weather, isDark }: CurrentWeatherProps) {
       <div className="grid grid-cols-3 gap-4">
         {[
           { icon: Wind, label: 'Wind', value: `${Math.round(weather.wind.speed * 3.6)} km/h` },
-          { icon: Droplets, label: 'Humidity', value: `${weather.main.humidity}%` },
-          { icon: Thermometer, label: 'Feels like', value: `${kelvinToCelsius(weather.main.feels_like)}°C` },
+          { icon: Droplets, label: 'Humidity', value: `${animatedHumidity}%` },
+          { icon: Thermometer, label: 'Feels like', value: `${animatedFeelsLike}°C` },
         ].map((item, index) => (
           <div key={index} className={`flex items-center rounded-lg p-4 transition-colors duration-200 ${
             isDark
@@ -50,7 +60,7 @@ export function CurrentWeather({ weather, isDark }: CurrentWeatherProps) {
             <item.icon className={`h-6 w-6 mr-3 ${isDark ? 'text-sky-400' : 'text-sky-500'}`} />
             <div>
               <p className={isDark ? 'text-slate-400' : 'text-slate-600'}>{item.label}</p>
-              <p className={`font-semibold ${isDark ? 'text-slate-100' : 'text-slate-900'}`}>{item.value}</p>
+              <p className={`font-semibold ${isDark ? 'text-slate-100' : 'text-slate-900'} transition-all duration-1000 ease-out transform hover:scale-105`}>{item.value}</p>
             </div>
           </div>
         ))}
